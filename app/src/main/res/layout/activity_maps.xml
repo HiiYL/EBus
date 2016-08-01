@@ -10,30 +10,124 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.hii_pc.ebus.MapsActivity" />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/white_bg">
+        android:orientation="vertical">
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="#003366">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".7"
                 android:layout_height="wrap_content"
-                android:text="Bus Arriving!"
-                android:textColor="#f00"
-                android:padding="10dp"
-                android:textSize="25sp" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="Arriving in 00:25"
-                android:textColor="#f00"
-                android:textSize="10sp" />
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="U429"
+                    android:textColor="#FFF"
+                    android:padding="10dp"
+                    android:textSize="25sp" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Persiaran Multimedia"
+                    android:textColor="#FFF"
+                    android:textSize="10sp" />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="24sp"
+                        android:textColor="#FFF"
+                        android:text="34"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#FFF"
+                        android:textSize="8sp"
+                        android:text="minutes"/>
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:background="#000">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".7"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="U43"
+                    android:textColor="#FFF"
+                    android:padding="10dp"
+                    android:textSize="25sp" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Alamanda Mall"
+                    android:textColor="#FFF"
+                    android:textSize="10sp" />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="24sp"
+                        android:textColor="#FFF"
+                        android:text="12"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#FFF"
+                        android:textSize="8sp"
+                        android:text="minutes"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
 </RelativeLayout>

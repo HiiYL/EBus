@@ -1,6 +1,7 @@
 package com.example.hii_pc.ebus;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -17,11 +18,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, Listener {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
     private GoogleMap mMap;
@@ -88,13 +91,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Marker me = mMap.addMarker(new MarkerOptions().position(myPos).title("Hello Its me"));
                         markers.add(me);
 
-                        LatLng Bus = new LatLng(arg0.getLatitude() + 0.001, arg0.getLongitude() + 0.001);
+                        LatLng Bus = new LatLng(arg0.getLatitude() - 0.001, arg0.getLongitude() - 0.001);
                         Marker busMarker = mMap.addMarker(new MarkerOptions()
                                 .position(Bus)
                                 .title("BUS")
                                 .snippet("HELLO BUS")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus)));
                         markers.add(busMarker);
+
+                        LatLng Bus2 = new LatLng(arg0.getLatitude() + 0.05, arg0.getLongitude() + 0.05);
+                        Marker bus2Marker = mMap.addMarker(new MarkerOptions()
+                                .position(Bus2)
+                                .title("BUS")
+                                .snippet("HELLO BUS")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus)));
+                        markers.add(bus2Marker);
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(myPos));
                         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myPos,18.0f));
                         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -108,12 +119,77 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
                         mMap.animateCamera(cu);
 
+                        // Checks, whether start and end locations are captured
+                        if (markers.size() >= 2) {
+                            LatLng origin = markers.get(0).getPosition();
+                            LatLng dest = markers.get(2).getPosition();
+
+                            // Getting URL to the Google Directions API
+                            String url = GetDataFromUrl.getDirectionsUrl(origin, dest);
+                            GetDirections getDirections = new GetDirections(MapsActivity.this);
+                            getDirections.startGettingDirections(url);
+                        }
+
                     }
                 });
 
             }
         }
     }
+    //The task for getting directions ends up here...
+    @Override
+    public void onSuccessfulRouteFetch(final List<List<HashMap<String, String>>> result) {
+        Log.e("HUH", "SUCCESS!");
+
+        //if it takes a long time, we will do it in a seperate thread...
+        new Thread(new Runnable() {
+            public PolylineOptions lineOptions;
+            public ArrayList<LatLng> points;
+
+            @Override
+            public void run() {
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                // Traversing through all the routes
+                for (List<HashMap<String, String>> path : result) {
+                    points = new ArrayList<LatLng>();
+                    lineOptions = new PolylineOptions();
+
+                    int size = path.size();
+                    // Get all the points for this route
+                    for (HashMap<String, String> point : path) {
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lng = Double.parseDouble(point.get("lng"));
+                        LatLng position = new LatLng(lat, lng);
+                        points.add(position);
+                    }
+
+                    // Adding all the points in the route to LineOptions
+                    lineOptions.addAll(points);
+                    lineOptions.width(12);
+                    lineOptions.color(Color.RED);
+                }
+
+                //Do all UI operations on the UI thread only...
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Drawing polyline in the Google Map for the this route
+                        mMap.addPolyline(lineOptions);
+                    }
+                });
+
+            }
+        }).start();
+
+    }
+
+    @Override
+    public void onFail() {
+        Log.e("HUH", "FAILED!");
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
