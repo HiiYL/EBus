@@ -1,13 +1,20 @@
 package com.example.hii_pc.ebus;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.example.hii_pc.ebus.booking.SeatActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, Listener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, Listener {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
     private GoogleMap mMap;
@@ -215,6 +222,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.seat:
+                Intent myIntent = new Intent(this, SeatActivity.class);
+                startActivity(myIntent);
+                return true;
+            case R.id.misc:
+                //TODO
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
